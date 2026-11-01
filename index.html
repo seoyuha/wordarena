@@ -354,6 +354,17 @@ body:has(#scr-game.on) #sndBtn{bottom:auto;top:104px;right:12px;width:34px;heigh
 .t-lobby .lp .av{width:26px;height:26px;border-width:1px}
 .sel-inp{border:2px solid var(--par2);border-radius:10px;padding:7px 10px;background:#fffdf5;font-weight:700}
 
+
+/* 나무판 버튼 (게임 버튼과 같은 모양) */
+.gbtn{border:0;border-style:solid;border-width:0 26px;border-image:var(--i-bt_blank_n) 0 70 fill / 0 26px stretch;background:none;box-shadow:none;height:46px;padding:0 6px;font-family:var(--fj);font-size:17px;color:#fbe9c2;text-shadow:0 2px 0 #3a1d06,0 0 3px #000;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));border-radius:0;white-space:nowrap;transition:transform .08s}
+.gbtn.sm{height:38px;font-size:14px;border-width:0 22px;border-image-width:0 22px;padding:0 4px;border-radius:0}
+.gbtn:hover:not(:disabled),.gbtn.sel{border-image-source:var(--i-bt_blank_h)}
+.gbtn.sel{color:#fff6c8}
+.gbtn:active:not(:disabled){transform:translateY(1px) scale(.98);filter:drop-shadow(0 2px 3px rgba(0,0,0,.35)) brightness(.82);box-shadow:none}
+.gbtn:disabled{border-image-source:var(--i-bt_blank_d);color:#ddd;filter:none;opacity:1}
+.gbtn.red{color:#ffc2b5;background:none;box-shadow:none;text-shadow:0 2px 0 #3a0a06,0 0 3px #000}
+.gbtn.green{color:#d6ffc4;background:none;box-shadow:none;text-shadow:0 2px 0 #12350c,0 0 3px #000}
+.gbtn.brown{background:none;box-shadow:none}
 /* ---------- 좁은 화면 ---------- */
 @media (max-width:1100px){ #scr-entry>.chars{grid-template-columns:repeat(5,1fr);max-width:720px} }
 @media (max-width:760px){
@@ -1478,7 +1489,7 @@ $('#btnTeacher').onclick = ()=>{
 };
 $('#btnTOut').onclick = ()=>show(me ? (rid ? (rooms[rid]&&rooms[rid].status!=='wait'?'game':'room') : 'lobby') : 'home');
 function renderTeacher(){
-  $('#tGs').innerHTML=[2,3,4].map(n=>`<button class="gbtn sm ${settings.gs===n?'':'brown'}" data-gs="${n}">${n}명씩</button>`).join('');
+  $('#tGs').innerHTML=[2,3,4].map(n=>`<button class="gbtn sm ${settings.gs===n?'sel':''}" data-gs="${n}">${n}명씩</button>`).join('');
   document.querySelectorAll('[data-gs]').forEach(b=>b.onclick=()=>DB.set('settings/gs',+b.dataset.gs));
   $('#tAs').checked=!!settings.as; $('#tMix').checked=!!settings.mix;
   const wl=Object.entries(lobbyMap||{}).filter(([p,x])=>x&&!(x.assign&&rooms[x.assign])).sort((a,b)=>String(a[1].c).localeCompare(String(b[1].c))||a[1].t-b[1].t);
@@ -1487,7 +1498,7 @@ function renderTeacher(){
   $('#tMode').innerHTML = settings.levelMode==='fixed' ? `지금: 모든 방 <b>${settings.level}학년 ${LV_NAME[settings.level]}</b> (점수 ×${LV_MUL[settings.level]})` : '지금: <b>방마다 학생들이 투표로</b> 수준을 정해요';
   document.querySelectorAll('[data-tl]').forEach(b=>b.onclick=()=>applyLevel(b.dataset.tl));
   $('#tStudent').classList.toggle('red', false);
-  $('#tTime').innerHTML = [[0,'제한 없음'],[60,'60초'],[90,'90초'],[120,'120초']].map(([v,l])=>`<button class="gbtn sm ${settings.tt===v?'':'brown'}" data-tt="${v}">${l}</button>`).join('');
+  $('#tTime').innerHTML = [[0,'제한 없음'],[60,'60초'],[90,'90초'],[120,'120초']].map(([v,l])=>`<button class="gbtn sm ${settings.tt===v?'sel':''}" data-tt="${v}">${l}</button>`).join('');
   document.querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>DB.set('settings/tt', +b.dataset.tt));
   const tc=$('#tClasses'); if (tc.options.length!==15) tc.innerHTML=Array.from({length:15},(_,i)=>`<option value="${i+1}">${i+1}개 반</option>`).join('');
   tc.value=settings.classes; tc.onchange=()=>DB.set('settings/classes', +tc.value);
@@ -1498,7 +1509,7 @@ function renderTeacher(){
     const lv = g ? `${g.level}학년` : (settings.levelMode==='fixed'?settings.level+'학년':'투표 중');
     return `<div class="t-room"><h4>방 ${r.no} ${st}<small style="margin-left:auto;color:var(--sub);font-family:'Pretendard';font-size:13px;font-weight:700">${lv}</small></h4>
       ${ps.map(([p,x])=>`<div class="p">${avHTML(x.ch)}${esc(x.c)}반 ${esc(x.n)}${g&&g.left&&g.left[p]?' (나감)':''}${g&&r.status==='play'&&g.order[g.turn]===p?' ◀':''}${g?`<b>${(g.scores||{})[p]||0}점</b>`:''}</div>`).join('')||'—'}
-      <div class="seg" style="margin-top:4px">${r.status==='play'?`<button class="gbtn sm brown" data-tend="${k}">게임 끝내기</button>`:''}<button class="gbtn sm red" data-tclose="${k}">방 닫기</button></div></div>`;
+      <div class="seg" style="margin-top:4px">${r.status==='play'?`<button class="gbtn sm" data-tend="${k}">게임 끝내기</button>`:''}<button class="gbtn sm red" data-tclose="${k}">방 닫기</button></div></div>`;
   }).join('') : '<p style="color:var(--sub);font-size:14px;margin:0">열린 방이 없어요.</p>';
   document.querySelectorAll('[data-tend]').forEach(b=>b.onclick=()=>DB.txn('rooms/'+b.dataset.tend, r=>{ if(!r||r.status!=='play') return; r.status='end'; r.game.end={reason:'teacher'}; return r; }));
   document.querySelectorAll('[data-tclose]').forEach(b=>b.onclick=()=>{ if(confirm('이 방을 닫을까요? 학생들은 로비로 나가요.')) DB.remove('rooms/'+b.dataset.tclose); });
