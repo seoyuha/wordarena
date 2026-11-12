@@ -365,6 +365,47 @@ body:has(#scr-game.on) #sndBtn{bottom:auto;top:104px;right:12px;width:34px;heigh
 .gbtn.red{color:#ffc2b5;background:none;box-shadow:none;text-shadow:0 2px 0 #3a0a06,0 0 3px #000}
 .gbtn.green{color:#d6ffc4;background:none;box-shadow:none;text-shadow:0 2px 0 #12350c,0 0 3px #000}
 .gbtn.brown{background:none;box-shadow:none}
+/* 단어 공부 */
+.study{width:min(1000px,100%);display:flex;flex-direction:column;gap:12px}
+.stunits{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stunit{border:2px solid var(--gold2);border-radius:14px;padding:12px 16px;text-align:left;color:#fbe9c2;background:linear-gradient(135deg,var(--uc),#1d1209);box-shadow:0 6px 14px rgba(0,0,0,.4);display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;opacity:.65;transition:.15s}
+.stunit b{grid-row:1/3;font-family:var(--fj);font-size:30px;color:var(--gold);align-self:center;text-shadow:0 2px 0 #000}
+.stunit small{font-size:15px;font-weight:800}.stunit em{font-style:normal;font-size:13px;opacity:.85}
+.stunit.on{opacity:1;box-shadow:0 0 0 3px #ffd54a,0 0 18px rgba(255,213,74,.6)}
+.st-panel{padding:14px 16px 18px}
+.st-tabs{justify-content:center;margin-bottom:10px}
+.st-tip{font-size:13px;color:var(--sub);margin:0 0 10px;text-align:center}
+.wcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.wcard{border:2px solid var(--par2);border-radius:12px;background:#fffdf5;padding:10px 12px;text-align:left;display:flex;flex-direction:column;gap:2px;box-shadow:0 2px 4px rgba(0,0,0,.12)}
+.wcard:hover{border-color:var(--gold2)}
+.wcard.pop{animation:fxpop2 .4s}
+.wcard .en{font-family:var(--fj);font-size:24px;color:var(--blue)}.wcard .en i{font-style:normal;font-size:14px;color:var(--gold2)}
+.wcard .ko{font-weight:800;font-size:15px}
+.wcard .ex{font-size:13px;color:#4a3420;margin-top:4px}.wcard .exko{font-size:12px;color:var(--sub)}
+.sents{display:flex;flex-direction:column;gap:8px}
+.sent{border:2px solid var(--par2);border-radius:12px;background:#fffdf5;padding:12px 16px;text-align:left;display:flex;flex-direction:column;gap:3px}
+.sent b{font-size:20px;color:var(--blue)}.sent span{font-size:14px;color:var(--sub);font-weight:700}
+.qz{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.qz-top{display:flex;align-items:center;gap:10px;font-weight:800}
+.qz-bar{flex:1;height:10px;border-radius:999px;background:#e6d2a5;overflow:hidden}.qz-bar i{display:block;height:100%;background:linear-gradient(90deg,#f2b632,#ffe58a)}
+.qz-q{position:relative;text-align:center;background:#fffdf5;border:2px solid var(--gold2);border-radius:14px;padding:16px 44px}
+.qz-q small{display:block;color:var(--sub);font-weight:700;font-size:13px;margin-bottom:6px}
+.qz-q b{font-family:var(--fj);font-weight:400;font-size:28px;color:var(--ink)}
+.qz-say{position:absolute;right:10px;top:10px;border:none;background:none;font-size:22px}
+.qz-ch{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qz-opt{border:2px solid var(--par2);border-radius:12px;background:#fff;padding:12px;font-size:18px;font-weight:800;text-align:left}
+.qz-opt b{color:var(--gold2);margin-right:4px}
+.qz-opt:hover:not(:disabled){border-color:var(--gold2)}
+.qz-opt.good{background:#e3f6dc;border-color:#3f9a33}.qz-opt.bad{background:#fde3dc;border-color:#c8382a}
+.qz-slots,.qz-pool{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;--c:52px}
+.qz-pool{padding:10px;border-radius:12px;background:linear-gradient(180deg,#2a170a,#4a2a14)}
+.qz-slots .tile,.qz-pool .tile{border:none;padding:0;cursor:pointer}
+.qz-slot{width:52px;height:52px;border-radius:6px;border:2px dashed var(--gold2);background:rgba(255,255,255,.5)}
+.qz-slot.dim{border-color:rgba(233,189,85,.3);background:transparent}
+.qz-fb{text-align:center;font-size:17px;font-weight:700;min-height:24px}.qz-fb b{color:var(--blue)}
+.qz-end{text-align:center}.qz-big{font-family:var(--fj);font-size:64px;color:var(--red)}.qz-big small{font-size:26px;color:var(--sub)}
+.qz-miss{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.qz-miss span{background:#fff;border:1px solid var(--par2);border-radius:8px;padding:5px 10px;font-size:14px}.qz-miss b{color:var(--blue)}
+@media (max-width:760px){ .stunits{grid-template-columns:1fr 1fr;gap:6px} .stunit{padding:8px;column-gap:6px} .stunit b{font-size:20px} .stunit small{font-size:11px} .wcards{grid-template-columns:1fr 1fr} .wcard .en{font-size:18px} .qz-ch{grid-template-columns:1fr} .qz-slots,.qz-pool{--c:40px} .qz-slot{width:40px;height:40px} .qz-q b{font-size:22px} }
 /* ---------- 좁은 화면 ---------- */
 @media (max-width:1100px){ #scr-entry>.chars{grid-template-columns:repeat(5,1fr);max-width:720px} }
 @media (max-width:760px){
@@ -461,7 +502,7 @@ body:has(#scr-game.on) #sndBtn{bottom:auto;top:104px;right:12px;width:34px;heigh
       <button class="ib ico" style="--img:var(--i-i_home)" id="btnLogout" aria-label="처음으로"></button>
       <div class="logo"></div>
       <div class="mid"><span class="ribbon">게임 로비</span></div>
-      <div class="rt"><button class="wb" style="--n:var(--i-bt_rank_n);--h:var(--i-bt_rank_h);--d:var(--i-bt_rank_d);--bh:42px" data-act="ranking" aria-label="랭킹 보기"></button><button class="wb wb1" style="--n:var(--i-bt_help_n);--ar:2.11;--bh:42px" data-act="rules" aria-label="도움말"></button></div>
+      <div class="rt"><button class="wb" style="--n:var(--i-bt_blank_n);--h:var(--i-bt_blank_h);--d:var(--i-bt_blank_d);--bh:42px" data-go="study" aria-label="단어 공부">📖 단어 공부</button><button class="wb" style="--n:var(--i-bt_rank_n);--h:var(--i-bt_rank_h);--d:var(--i-bt_rank_d);--bh:42px" data-act="ranking" aria-label="랭킹 보기"></button><button class="wb wb1" style="--n:var(--i-bt_help_n);--ar:2.11;--bh:42px" data-act="rules" aria-label="도움말"></button></div>
     </div>
     <div class="lobby">
       <div class="parch me-card" id="meCard"></div>
@@ -470,6 +511,24 @@ body:has(#scr-game.on) #sndBtn{bottom:auto;top:104px;right:12px;width:34px;heigh
         <div class="lv-note" id="lobbyLevel"></div>
         <div class="rooms" id="roomList"></div>
       </div>
+    </div>
+  </section>
+
+  <!-- 단어 공부 -->
+  <section class="screen page" id="scr-study">
+    <div class="page-head">
+      <button class="ib ico" style="--img:var(--i-i_back)" data-go="lobby" aria-label="로비로"></button>
+      <div class="logo"></div>
+      <div class="mid"><span class="ribbon">단어 공부</span></div>
+      <div class="rt"></div>
+    </div>
+    <div class="study">
+      <div class="stunits" id="stUnits"></div>
+      <div class="parch st-panel">
+        <div class="seg st-tabs" id="stTabs"></div>
+        <div id="stBody"></div>
+      </div>
+      <p class="wait-hint">🎲 선생님이 모둠을 배정하면 공부하던 중에도 바로 게임 방으로 이동해요.</p>
     </div>
   </section>
 
@@ -625,7 +684,7 @@ const WORD_DATA = {
 3:`you:너,she:그녀,him:그를,his:그의,her:그녀의,are:~이다,can:할 수 있다,not:아니다,the:그,and:그리고,but:그러나,for:~을 위해,how:어떻게,who:누구,why:왜,what:무엇,yes:네,too:또한,our:우리의,out:밖에,put:놓다,top:꼭대기,day:날,way:길,let:~하게 하다,get:얻다,say:말하다,all:모두,this:이것,that:저것,here:여기,there:거기,apple:사과,ant:개미,arm:팔,baby:아기,bag:가방,ball:공,banana:바나나,bear:곰,bed:침대,big:큰,bird:새,black:검은색,blue:파란색,boat:보트,book:책,box:상자,boy:소년,bread:빵,brother:남자 형제,brown:갈색,bus:버스,cake:케이크,car:자동차,cat:고양이,chair:의자,chicken:닭,class:학급,clean:깨끗한,close:닫다,cold:추운,come:오다,cook:요리하다,cow:소,cup:컵,cut:자르다,dad:아빠,dance:춤추다,desk:책상,dog:개,doll:인형,door:문,down:아래로,draw:그리다,duck:오리,ear:귀,eat:먹다,egg:달걀,eight:8,eye:눈,face:얼굴,fan:선풍기,father:아버지,fine:좋은,fish:물고기,five:5,flower:꽃,fly:날다,foot:발,four:4,fox:여우,friend:친구,frog:개구리,game:게임,girl:소녀,glad:기쁜,good:좋은,grape:포도,green:초록색,hair:머리카락,hand:손,happy:행복한,hat:모자,head:머리,hello:안녕,help:돕다,hen:암탉,home:집,horse:말,hot:더운,house:집,ice:얼음,jump:뛰다,juice:주스,kite:연,leg:다리,like:좋아하다,lion:사자,look:보다,love:사랑,man:남자,map:지도,milk:우유,mom:엄마,monkey:원숭이,mother:어머니,mouth:입,name:이름,new:새로운,nine:9,nose:코,now:지금,old:오래된,one:1,open:열다,orange:오렌지,pen:펜,pencil:연필,pet:반려동물,pig:돼지,pink:분홍색,pizza:피자,play:놀다,rabbit:토끼,rain:비,red:빨간색,robot:로봇,ruler:자,run:달리다,sad:슬픈,see:보다,seven:7,sing:노래하다,sister:여자 형제,sit:앉다,six:6,sky:하늘,small:작은,snow:눈(날씨),sorry:미안한,stand:서다,star:별,sun:해,swim:수영하다,table:탁자,tall:키가 큰,ten:10,three:3,tiger:호랑이,tomato:토마토,toy:장난감,tree:나무,two:2,water:물,white:흰색,window:창문,yellow:노란색,zero:0,zoo:동물원,eraser:지우개,bat:박쥐,hit:치다,sea:바다`,
 4:`afternoon:오후,age:나이,air:공기,animal:동물,answer:대답,art:미술,aunt:이모,autumn:가을,bad:나쁜,bake:굽다,band:밴드,bank:은행,basket:바구니,bath:목욕,beach:해변,bee:벌,bell:종,bike:자전거,birthday:생일,blow:불다,body:몸,bottle:병,bowl:그릇,brush:솔,build:짓다,busy:바쁜,buy:사다,call:부르다,candy:사탕,cap:모자,card:카드,carrot:당근,catch:잡다,child:아이,city:도시,climb:오르다,clock:시계,cloud:구름,coat:외투,color:색,cool:시원한,corn:옥수수,count:세다,crayon:크레용,cry:울다,cute:귀여운,dark:어두운,deer:사슴,doctor:의사,dream:꿈,dress:드레스,drink:마시다,drive:운전하다,dry:마른,early:일찍,east:동쪽,easy:쉬운,elephant:코끼리,evening:저녁,fall:떨어지다,farm:농장,fast:빠른,feel:느끼다,fire:불,floor:바닥,food:음식,fork:포크,fruit:과일,fun:재미,garden:정원,gift:선물,give:주다,glass:유리잔,gold:금,grass:풀,gray:회색,hamburger:햄버거,hard:어려운,hear:듣다,heart:마음,heavy:무거운,hill:언덕,hobby:취미,hold:잡다,hungry:배고픈,idea:생각,jam:잼,key:열쇠,kick:차다,kind:친절한,king:왕,kitchen:부엌,knife:칼,lake:호수,late:늦은,lazy:게으른,light:빛,lip:입술,listen:듣다,little:작은,long:긴,lunch:점심,make:만들다,many:많은,meat:고기,money:돈,moon:달,morning:아침,mountain:산,mouse:쥐,music:음악,neck:목,nice:멋진,night:밤,noon:정오,north:북쪽,nurse:간호사,office:사무실,oil:기름,onion:양파,paint:칠하다,paper:종이,park:공원,party:파티,pear:배(과일),picture:그림,pie:파이,pilot:조종사,plan:계획,plant:식물,police:경찰,pool:수영장,potato:감자,pretty:예쁜,push:밀다,puzzle:퍼즐,queen:여왕,quiet:조용한,read:읽다,rice:쌀,ride:타다,river:강,road:길,rock:바위,room:방,rose:장미,shoe:신발,shop:가게,short:짧은,shy:수줍은,sleep:자다,slow:느린,soccer:축구,sock:양말,soft:부드러운,song:노래,soup:수프,south:남쪽,spring:봄,start:시작하다,stop:멈추다,store:가게,strong:강한,student:학생,study:공부하다,summer:여름,sweet:달콤한,teacher:선생님,tennis:테니스,thank:감사하다,time:시간,today:오늘,tooth:이(치아),town:마을,train:기차,ugly:못생긴,uncle:삼촌,walk:걷다,wash:씻다,watch:보다,wear:입다,west:서쪽,wet:젖은,wind:바람,winter:겨울,wolf:늑대,work:일하다,write:쓰다,year:해(년),young:어린,zebra:얼룩말,near:가까운,far:먼,next:다음의,front:앞,back:뒤`,
 5:`actor:배우,add:더하다,album:앨범,angry:화난,arrive:도착하다,ask:묻다,baseball:야구,basketball:농구,beautiful:아름다운,begin:시작하다,believe:믿다,belt:벨트,between:사이에,blood:피,board:판,bone:뼈,borrow:빌리다,brave:용감한,break:깨다,breakfast:아침 식사,bridge:다리(건축),bright:밝은,bring:가져오다,burn:타다,button:단추,calendar:달력,camera:카메라,camp:캠프,careful:조심하는,carry:나르다,castle:성,change:바꾸다,cheap:값싼,cheese:치즈,choose:고르다,circle:원,clever:영리한,club:동아리,coin:동전,computer:컴퓨터,contest:대회,corner:모퉁이,country:나라,cousin:사촌,crown:왕관,culture:문화,curious:궁금한,danger:위험,date:날짜,deep:깊은,delicious:맛있는,dentist:치과 의사,dinner:저녁 식사,dish:접시,dive:다이빙하다,dollar:달러,dragon:용,drum:북,enjoy:즐기다,enter:들어가다,exam:시험,exercise:운동,famous:유명한,farmer:농부,favorite:가장 좋아하는,festival:축제,field:들판,fight:싸우다,find:찾다,finger:손가락,finish:끝내다,flag:깃발,forest:숲,forget:잊다,free:자유로운,fresh:신선한,future:미래,ghost:유령,glove:장갑,goal:목표,grandma:할머니,grandpa:할아버지,great:훌륭한,ground:땅,group:무리,guess:추측하다,guitar:기타,gym:체육관,habit:습관,half:절반,handsome:잘생긴,health:건강,history:역사,holiday:휴일,honest:정직한,hospital:병원,hour:시간,hurry:서두르다,hurt:다치다,invite:초대하다,island:섬,join:가입하다,joy:기쁨,keep:유지하다,kid:아이,land:땅,laugh:웃다,lesson:수업,letter:편지,library:도서관,lie:거짓말,line:선,live:살다,lose:잃다,magic:마술,market:시장,math:수학,meet:만나다,middle:가운데,minute:분,mirror:거울,miss:그리워하다,movie:영화,museum:박물관,nature:자연,need:필요하다,news:뉴스,note:메모,number:숫자,ocean:바다(대양),people:사람들,piano:피아노,place:장소,plate:접시,pocket:주머니,poor:가난한,present:선물,price:가격,prince:왕자,princess:공주,problem:문제,rainbow:무지개,ready:준비된,rest:휴식,rich:부유한,ring:반지,salad:샐러드,salt:소금,sand:모래,save:구하다,science:과학,score:점수,season:계절,send:보내다,ship:배(선박),shirt:셔츠,shout:외치다,show:보여주다,sick:아픈,sign:표지판,smell:냄새 맡다,smile:미소,snack:간식,soldier:군인,space:우주,speak:말하다,sport:운동 경기,square:정사각형,stair:계단,stone:돌,story:이야기,street:거리,sugar:설탕,surprise:놀라게 하다,taste:맛,team:팀,test:시험,thin:얇은,think:생각하다,thirsty:목마른,ticket:표,tired:피곤한,together:함께,tomorrow:내일,tonight:오늘 밤,travel:여행하다,trip:여행,true:사실인,try:시도하다,turn:돌다,umbrella:우산,vacation:방학,vegetable:채소,visit:방문하다,wait:기다리다,wall:벽,want:원하다,warm:따뜻한,weather:날씨,week:주,wish:바라다,wonderful:멋진,world:세계,worry:걱정하다,yesterday:어제`,
-6:`across:건너편에,advice:충고,alone:혼자,along:~을 따라,area:지역,artist:예술가,attack:공격하다,battery:건전지,behind:뒤에,bitter:쓴,block:구역,bottom:바닥,brain:뇌,captain:선장,center:중심,chance:기회,cheer:응원하다,clothes:옷,collect:모으다,cookie:쿠키,copy:베끼다,crosswalk:횡단보도,dangerous:위험한,decide:결정하다,design:디자인,diary:일기,different:다른,difficult:어려운,dirty:더러운,dolphin:돌고래,drop:떨어뜨리다,dumpling:만두,earth:지구,energy:에너지,engineer:기술자,environment:환경,error:실수,event:행사,example:예,fact:사실,fail:실패하다,fantastic:환상적인,fever:열,fix:고치다,fog:안개,foreign:외국의,fry:튀기다,garbage:쓰레기,gate:문,gentle:온화한,glue:풀(접착),grow:자라다,guide:안내하다,hanbok:한복,hate:싫어하다,hero:영웅,hike:하이킹하다,hole:구멍,hope:희망,human:인간,invent:발명하다,item:물품,jacket:재킷,job:직업,journey:여행,kimchi:김치,ladder:사다리,leaf:나뭇잎,left:왼쪽,lucky:운 좋은,mail:우편,medicine:약,memory:기억,metal:금속,mind:마음,mistake:실수,model:모형,nation:국가,noise:소음,noodle:국수,novel:소설,pain:고통,pair:한 쌍,palace:궁전,pass:지나가다,pick:줍다,planet:행성,plastic:플라스틱,poem:시,point:점,pollute:오염시키다,power:힘,prize:상,promise:약속하다,protect:보호하다,proud:자랑스러운,quick:빠른,quiz:퀴즈,recycle:재활용하다,reduce:줄이다,repeat:반복하다,report:보고서,reuse:재사용하다,right:오른쪽,rule:규칙,salty:짠,sandwich:샌드위치,secret:비밀,shape:모양,silver:은,simple:간단한,skill:기술,smart:똑똑한,solve:풀다,sour:신,special:특별한,spicy:매운,station:역,steak:스테이크,straight:곧장,subway:지하철,symbol:상징,tail:꼬리,temple:사원,tradition:전통,trash:쓰레기,treasure:보물,turtle:거북,universe:우주,unplug:플러그를 뽑다,useful:유용한,voice:목소리,volunteer:자원봉사자,wallet:지갑,waste:낭비하다,wild:야생의,wise:현명한,wonder:궁금하다,wood:나무(목재),taekwondo:태권도,bibimbap:비빔밥,festival:축제,national:국가의,village:마을,museum:박물관`
+6:`across:건너편에,advice:충고,alone:혼자,along:~을 따라,area:지역,artist:예술가,attack:공격하다,battery:건전지,behind:뒤에,bitter:쓴,block:구역,bottom:바닥,brain:뇌,captain:선장,center:중심,chance:기회,cheer:응원하다,clothes:옷,collect:모으다,cookie:쿠키,copy:베끼다,crosswalk:횡단보도,dangerous:위험한,decide:결정하다,design:디자인,diary:일기,different:다른,difficult:어려운,dirty:더러운,dolphin:돌고래,drop:떨어뜨리다,dumpling:만두,earth:지구,energy:에너지,engineer:기술자,environment:환경,error:실수,event:행사,example:예,fact:사실,fail:실패하다,fantastic:환상적인,fever:열,fix:고치다,fog:안개,foreign:외국의,fry:튀기다,garbage:쓰레기,gate:문,gentle:온화한,glue:풀(접착),grow:자라다,guide:안내하다,hanbok:한복,hate:싫어하다,hero:영웅,hike:하이킹하다,hole:구멍,hope:희망,human:인간,invent:발명하다,item:물품,jacket:재킷,job:직업,journey:여행,kimchi:김치,ladder:사다리,leaf:나뭇잎,left:왼쪽,lucky:운 좋은,mail:우편,medicine:약,memory:기억,metal:금속,mind:마음,mistake:실수,model:모형,nation:국가,noise:소음,noodle:국수,novel:소설,pain:고통,pair:한 쌍,palace:궁전,pass:지나가다,pick:줍다,planet:행성,plastic:플라스틱,poem:시,point:점,pollute:오염시키다,power:힘,prize:상,promise:약속하다,protect:보호하다,proud:자랑스러운,quick:빠른,quiz:퀴즈,recycle:재활용하다,reduce:줄이다,repeat:반복하다,report:보고서,reuse:재사용하다,right:오른쪽,rule:규칙,salty:짠,sandwich:샌드위치,secret:비밀,shape:모양,silver:은,simple:간단한,skill:기술,smart:똑똑한,solve:풀다,sour:신,special:특별한,spicy:매운,station:역,steak:스테이크,straight:곧장,subway:지하철,symbol:상징,tail:꼬리,temple:사원,tradition:전통,trash:쓰레기,treasure:보물,turtle:거북,universe:우주,unplug:플러그를 뽑다,useful:유용한,voice:목소리,volunteer:자원봉사자,wallet:지갑,waste:낭비하다,wild:야생의,wise:현명한,wonder:궁금하다,wood:나무(목재),taekwondo:태권도,bibimbap:비빔밥,festival:축제,national:국가의,village:마을,museum:박물관,songpyeon:송편,tteokguk:떡국,gat:갓,yutnori:윷놀이,tuho:투호,jegichagi:제기차기,chuseok:추석,seollal:설날,kimchi:김치,bulgogi:불고기,japchae:잡채,hanok:한옥,arrow:화살,environment:환경`
 };
 const WORDS = {};
 for (const g of [0,3,4,5,6]) WORD_DATA[g].split(',').forEach(s=>{
@@ -873,6 +932,7 @@ function show(s){
   SCREEN=s; bgmFor(s); presence();
   document.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on', e.id==='scr-'+s));
   $('#rankbar').classList.toggle('hidden', s==='home'||s==='entry');
+  if (s==='study' && !me){ s='entry'; }
   render();
   if (s==='game') requestAnimationFrame(()=>fitBoard());
 }
@@ -883,6 +943,7 @@ function render(){
   else if (SCREEN==='room') renderRoom();
   else if (SCREEN==='game') renderGame();
   else if (SCREEN==='teacher') renderTeacher();
+  else if (SCREEN==='study') renderStudy();
 }
 document.addEventListener('click', e=>{
   const b=e.target.closest('button,.ccard,.hot'); if (b && !b.disabled && b.id!=='sndBtn' && !b.dataset.c) sfx('click',.7);
@@ -955,7 +1016,7 @@ function renderLobby(){
   if (!me) return show('entry');
   const c=chOf(me.ch);
   $('#meCard').innerHTML = `${heroHTML(c.id)}<div style="text-align:center"><div class="nm">${esc(me.name)}</div><div class="cl">${esc(me.cls)}반 · ${c.r}</div></div>
-    <button class="wb wb1" style="--n:var(--i-bt_charsel_n);--ar:2.98;--bh:44px" data-go="entry" aria-label="캐릭터 선택"></button>`;
+    <button class="wb wb1" style="--n:var(--i-bt_charsel_n);--ar:2.98;--bh:44px" data-go="entry" aria-label="캐릭터 선택"></button><button class="wb" style="--n:var(--i-bt_blank_n);--h:var(--i-bt_blank_h);--d:var(--i-bt_blank_d);--bh:44px" data-go="study" aria-label="단어 공부">📖 단어 공부</button>`;
   $('#lobbyLevel').innerHTML = levelModeText()+'<span style="margin-left:auto;font-size:12px;color:var(--sub)">🎲 선생님이 모둠을 배정하면 자동으로 방에 들어가요</span>';
   Object.entries(rooms||{}).forEach(([k,r])=>{ if(r && !r.players && DB.now()-(r.created||0)>8000) DB.remove('rooms/'+k); });
   const list = Object.entries(rooms||{}).filter(([k,r])=>r&&r.players).sort((a,b)=>(a[1].no||0)-(b[1].no||0));
@@ -1063,7 +1124,7 @@ $('#btnStart').onclick = async ()=>{ const res=await startRoom(rid,false); if (!
 
 /* ---------- 로비 대기 & 자동 배정 ---------- */
 function presence(){
-  const want = !!(me && SCREEN==='lobby' && !rid);
+  const want = !!(me && (SCREEN==='lobby'||SCREEN==='study') && !rid);
   if (want && !presOn){ presOn=true; DB.set('lobby/'+pid,{n:me.name,c:me.cls,ch:me.ch,t:DB.now()}); DB.onDiscRemove('lobby/'+pid); }
   else if (!want && presOn){ presOn=false; DB.cancelDisc('lobby/'+pid); DB.remove('lobby/'+pid); }
 }
@@ -1532,6 +1593,146 @@ $('#tReset').onclick = async ()=>{
   Object.entries(rooms||{}).forEach(([k,r])=>{ if(r&&r.game&&r.game.scores) Object.keys(r.game.scores).forEach(p=>up[`rooms/${k}/game/scores/${p}`]=0); });
   await DB.update('', up); toast('랭킹과 점수를 초기화했어요.');
 };
+
+/* =========================================================
+   단어 공부 (6학년 11·12단원)
+   ========================================================= */
+const UNITS = {
+  11: { title:'Lesson 11', name:'Do You Know About Songpyeon?', ko:'전통문화', color:'#a3241b',
+    words:[
+      ['songpyeon','송편',"People eat songpyeon on Chuseok.",'사람들은 추석에 송편을 먹어요.'],
+      ['tteokguk','떡국',"People eat tteokguk on Seollal.",'사람들은 설날에 떡국을 먹어요.'],
+      ['rice cake','떡',"It's a traditional Korean rice cake.",'그것은 한국의 전통 떡이에요.'],
+      ['traditional','전통의',"It's a traditional Korean game.",'그것은 한국의 전통 놀이예요.'],
+      ['hanbok','한복',"How about trying on hanbok?",'한복을 입어 보는 게 어때?'],
+      ['gat','갓',"It's a traditional Korean hat.",'그것은 한국의 전통 모자예요.'],
+      ['hat','모자',"I wear a hat.",'나는 모자를 써요.'],
+      ['yutnori','윷놀이',"How about playing yutnori?",'윷놀이를 해 보는 게 어때?'],
+      ['tuho','투호',"In tuho, you throw arrows into a pot.",'투호에서는 화살을 항아리에 던져요.'],
+      ['jegichagi','제기차기',"You kick a jegi with your foot.",'발로 제기를 차요.'],
+      ['kite','연',"Let's fly a kite.",'연을 날리자.'],
+      ['mask','탈',"People dance with a mask.",'사람들은 탈을 쓰고 춤을 춰요.'],
+      ['drum','북',"He plays the drum.",'그는 북을 쳐요.'],
+      ['Chuseok','추석',"Chuseok is a big holiday.",'추석은 큰 명절이에요.'],
+      ['Seollal','설날',"We bow on Seollal.",'우리는 설날에 절을 해요.'],
+      ['holiday','명절, 휴일',"Chuseok is a Korean holiday.",'추석은 한국의 명절이에요.'],
+      ['culture','문화',"I love Korean culture.",'나는 한국 문화를 사랑해요.'],
+      ['wear','입다, 쓰다',"People wear hanbok on special days.",'사람들은 특별한 날에 한복을 입어요.'],
+      ['try on','입어 보다',"How about trying it on?",'그것을 입어 보는 게 어때?'],
+      ['make','만들다',"How about making songpyeon?",'송편을 만들어 보는 게 어때?'],
+      ['special','특별한',"Today is a special day.",'오늘은 특별한 날이에요.'],
+      ['delicious','맛있는',"Bulgogi is delicious.",'불고기는 맛있어요.']
+    ],
+    sents:[
+      ["Do you know about songpyeon?",'송편에 대해 아니?'],
+      ["Yes, I do. It's a traditional Korean rice cake.",'응, 알아. 그것은 한국의 전통 떡이야.'],
+      ["No, I don't. What is it?",'아니, 몰라. 그게 뭐니?'],
+      ["How about making songpyeon?",'송편을 만들어 보는 게 어때?'],
+      ["Sounds good.",'좋아.']
+    ]},
+  12: { title:'Lesson 12', name:'We Should Save the World', ko:'환경 보호', color:'#2f6b2a',
+    words:[
+      ['save','아끼다, 구하다',"We should save water.",'우리는 물을 아껴야 해요.'],
+      ['water','물',"Don't forget to turn off the water.",'물을 잠그는 것을 잊지 마.'],
+      ['energy','에너지',"We should save energy.",'우리는 에너지를 아껴야 해요.'],
+      ['forest','숲',"We should save the forest.",'우리는 숲을 지켜야 해요.'],
+      ['earth','지구',"The earth is sick.",'지구가 아파요.'],
+      ['world','세계',"We should save the world.",'우리는 세상을 구해야 해요.'],
+      ['recycle','재활용하다',"Don't forget to recycle cans and bottles.",'캔과 병을 재활용하는 것을 잊지 마.'],
+      ['reuse','다시 사용하다',"Don't forget to reuse paper.",'종이를 다시 쓰는 것을 잊지 마.'],
+      ['reduce','줄이다',"We should reduce trash.",'우리는 쓰레기를 줄여야 해요.'],
+      ['turn off','끄다, 잠그다',"Don't forget to turn off the light.",'전등 끄는 것을 잊지 마.'],
+      ['light','전등, 빛',"Turn off the light, please.",'전등을 꺼 주세요.'],
+      ['stairs','계단',"How about using the stairs?",'계단을 이용하는 게 어때?'],
+      ['plastic bag','비닐봉지',"Don't use plastic bags.",'비닐봉지를 쓰지 마.'],
+      ['paper cup','종이컵',"Don't use paper cups.",'종이컵을 쓰지 마.'],
+      ['can','캔',"Put the can in the recycling bin.",'캔을 재활용 통에 넣어.'],
+      ['bottle','병',"Recycle the bottle.",'병을 재활용해.'],
+      ['trash','쓰레기',"Don't throw trash on the street.",'길에 쓰레기를 버리지 마.'],
+      ['throw away','버리다',"Don't throw away the paper.",'그 종이를 버리지 마.'],
+      ['cup','컵',"Don't forget to use a cup.",'컵을 쓰는 것을 잊지 마.'],
+      ['paper','종이',"We should save paper.",'우리는 종이를 아껴야 해요.'],
+      ['protect','보호하다',"We should protect animals.",'우리는 동물을 보호해야 해요.'],
+      ['environment','환경',"Let's protect the environment.",'환경을 보호하자.']
+    ],
+    sents:[
+      ["We should save water.",'우리는 물을 아껴야 해.'],
+      ["Don't forget to turn off the light.",'전등 끄는 것을 잊지 마.'],
+      ["Don't forget to recycle cans and bottles.",'캔과 병을 재활용하는 것을 잊지 마.'],
+      ["How about using the stairs?",'계단을 이용하는 게 어때?'],
+      ["Sure. We should save energy.",'물론이지. 우리는 에너지를 아껴야 해.']
+    ]}
+};
+let stU = 11, stTab = 'words', QZ = null;
+function speak(t){ try{ const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=.85; speechSynthesis.cancel(); speechSynthesis.speak(u); }catch(e){} }
+function renderStudy(){
+  const U=UNITS[stU];
+  $('#stUnits').innerHTML=[11,12].map(n=>`<button class="stunit${n===stU?' on':''}" data-su="${n}" style="--uc:${UNITS[n].color}"><b>${n}단원</b><small>${UNITS[n].name}</small><em>${UNITS[n].ko}</em></button>`).join('');
+  $('#stTabs').innerHTML=[['words','📖 단어장'],['sents','💬 핵심 표현'],['quiz','✏️ 퀴즈 풀기']].map(([k,l])=>`<button class="gbtn sm ${stTab===k?'sel':''}" data-st="${k}">${l}</button>`).join('');
+  const B=$('#stBody');
+  if (stTab==='words'){
+    B.innerHTML=`<p class="st-tip">🔊 카드를 누르면 발음을 들을 수 있어요. 별표(★) 단어는 게임판에서 쓸 수 있어요!</p><div class="wcards">${U.words.map(([en,ko,ex,exko],i)=>{
+      const playable=/^[a-zA-Z]+$/.test(en) && !!lookup(en.toLowerCase()); return `<button class="wcard" data-say="${i}"><span class="en">${esc(en)}${playable?' <i>★</i>':''}</span><span class="ko">${esc(ko)}</span><span class="ex">${esc(ex)}</span><span class="exko">${esc(exko)}</span></button>`;}).join('')}</div>`;
+  } else if (stTab==='sents'){
+    B.innerHTML=`<p class="st-tip">🔊 문장을 누르면 들을 수 있어요. 따라 읽어 보세요!</p><div class="sents">${U.sents.map(([en,ko],i)=>`<button class="sent" data-sent="${i}"><b>${esc(en)}</b><span>${esc(ko)}</span></button>`).join('')}</div>`;
+  } else renderQuiz();
+}
+function mkQuiz(){
+  const U=UNITS[stU], W=U.words.slice(); const qs=[]; shuffle(W);
+  const types=['ko','en','spell','blank','ko','spell','en','blank','spell','ko'];
+  const pool=n=>shuffle(U.words.filter(w=>w!==n)).slice(0,3);
+  for (let i=0;i<10;i++){
+    let t=types[i], w=W[i%W.length];
+    if (t==='spell' && !/^[a-zA-Z]+$/.test(w[0])) t='en';
+    if (t==='blank' && !new RegExp('\\b'+w[0]+'\\b','i').test(w[2])) t='ko';
+    if (t==='ko'){ const ch=shuffle([w,...pool(w)]); qs.push({t,q:w[0],sub:'이 단어의 뜻은?',ch:ch.map(x=>x[1]),a:ch.indexOf(w),w}); }
+    else if (t==='en'){ const ch=shuffle([w,...pool(w)]); qs.push({t,q:w[1],sub:'알맞은 영어 단어는?',ch:ch.map(x=>x[0]),a:ch.indexOf(w),w}); }
+    else if (t==='blank'){ const ch=shuffle([w,...pool(w)]); qs.push({t,q:w[2].replace(new RegExp('\\b'+w[0]+'\\b','i'),'______'),sub:'빈칸에 알맞은 말은? ('+w[3]+')',ch:ch.map(x=>x[0]),a:ch.indexOf(w),w}); }
+    else { let letters=w[0].toLowerCase().split(''); let sh; do{ sh=shuffle(letters.slice()); }while(sh.join('')===letters.join('')&&letters.length>1); qs.push({t,q:w[1],sub:'글자 타일을 순서대로 눌러 단어를 완성하세요',letters:sh,ans:letters.join(''),pick:[],w}); }
+  }
+  return {qs,i:0,score:0,done:false,answered:false};
+}
+function renderQuiz(){
+  const B=$('#stBody'); if(!QZ || QZ.unit!==stU){ QZ=mkQuiz(); QZ.unit=stU; }
+  if (QZ.done){
+    const s=QZ.score; const msg=s>=9?'완벽해요! 단어 박사예요 🎉':s>=7?'아주 잘했어요! 👍':s>=5?'좋아요! 한 번 더 도전해 볼까요?':'단어장을 한 번 더 보고 다시 도전해요 💪';
+    B.innerHTML=`<div class="qz-end"><div class="qz-big">${s} <small>/ 10</small></div><p>${msg}</p>
+      <div class="qz-miss">${QZ.qs.filter(q=>!q.ok).map(q=>`<span><b>${esc(q.w[0])}</b> ${esc(q.w[1])}</span>`).join('')||'<span>틀린 단어가 없어요!</span>'}</div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:14px"><button class="gbtn" data-qz="again">다시 풀기</button><button class="gbtn" data-st="words">단어장 보기</button></div></div>`;
+    return;
+  }
+  const q=QZ.qs[QZ.i];
+  let body='';
+  if (q.t==='spell'){
+    body=`<div class="qz-slots">${q.ans.split('').map((c,k)=>q.pick[k]!==undefined?`<span class="tile L-${q.letters[q.pick[k]]}" data-un="${k}"></span>`:'<span class="qz-slot"></span>').join('')}</div>
+      <div class="qz-pool">${q.letters.map((c,k)=>q.pick.includes(k)?'<span class="qz-slot dim"></span>':`<button class="tile L-${c}" data-lt="${k}" aria-label="${c}"></button>`).join('')}</div>
+      <div style="text-align:center;margin-top:8px"><button class="gbtn sm" data-qz="clear">다시 놓기</button></div>`;
+  } else body=`<div class="qz-ch">${q.ch.map((c,k)=>`<button class="qz-opt${q.res!==undefined?(k===q.a?' good':k===q.res?' bad':''):''}" data-op="${k}" ${q.res!==undefined?'disabled':''}><b>${'①②③④'[k]}</b> ${esc(c)}</button>`).join('')}</div>`;
+  B.innerHTML=`<div class="qz"><div class="qz-top"><span>${QZ.i+1} / 10</span><div class="qz-bar"><i style="width:${QZ.i*10}%"></i></div><span>⭐ ${QZ.score}</span></div>
+    <div class="qz-q"><small>${esc(q.sub)}</small><b>${esc(q.q)}</b>${q.t!=='en'&&q.t!=='spell'?`<button class="qz-say" data-qsay="1">🔊</button>`:''}</div>${body}
+    <div class="qz-fb" id="qzFb">${q.fb||''}</div>${q.res!==undefined||q.ok!==undefined?`<div style="text-align:center"><button class="gbtn" data-qz="next">${QZ.i<9?'다음 문제 ▶':'결과 보기'}</button></div>`:''}</div>`;
+}
+function qzAnswer(ok){
+  const q=QZ.qs[QZ.i]; q.ok=ok; if(ok) QZ.score++;
+  q.fb = ok? `⭕ 정답! <b>${esc(q.w[0])}</b> = ${esc(q.w[1])}` : `❌ 아쉬워요. 정답은 <b>${esc(q.w[0])}</b> (${esc(q.w[1])})`;
+  if (me) charPop(me.ch, ok?'CORRECT':'WRONG'); else sfx(ok?'correct':'wrong');
+  speak(q.w[0]); renderQuiz();
+}
+$('#scr-study').addEventListener('click',e=>{
+  const t=e.target.closest('button'); if(!t) return;
+  if (t.dataset.su){ stU=+t.dataset.su; renderStudy(); }
+  else if (t.dataset.st){ stTab=t.dataset.st; renderStudy(); }
+  else if (t.dataset.say!==undefined){ const w=UNITS[stU].words[+t.dataset.say]; speak(w[0]+'. '+w[2]); t.classList.remove('pop'); void t.offsetWidth; t.classList.add('pop'); }
+  else if (t.dataset.sent!==undefined) speak(UNITS[stU].sents[+t.dataset.sent][0]);
+  else if (t.dataset.qsay){ const q=QZ.qs[QZ.i]; speak(q.t==='blank'?q.w[2]:q.q); }
+  else if (t.dataset.op!==undefined){ const q=QZ.qs[QZ.i]; if(q.res!==undefined) return; q.res=+t.dataset.op; qzAnswer(q.res===q.a); }
+  else if (t.dataset.lt!==undefined){ const q=QZ.qs[QZ.i]; if(q.ok!==undefined) return; q.pick.push(+t.dataset.lt); sfx('click',.5);
+    if (q.pick.length===q.ans.length) qzAnswer(q.pick.map(k=>q.letters[k]).join('')===q.ans); else renderQuiz(); }
+  else if (t.dataset.qz==='clear'){ const q=QZ.qs[QZ.i]; if(q.ok===undefined){ q.pick=[]; renderQuiz(); } }
+  else if (t.dataset.qz==='next'){ if(QZ.i<9) QZ.i++; else { QZ.done=true; if(me&&QZ.score>=9) setTimeout(()=>charPop(me.ch,'AMAZING'),200); } renderQuiz(); }
+  else if (t.dataset.qz==='again'){ QZ=null; renderQuiz(); }
+});
+$('#scr-study').addEventListener('click',e=>{ const u=e.target.closest('[data-un]'); if(!u) return; const q=QZ.qs[QZ.i]; if(q.ok!==undefined) return; q.pick.splice(+u.dataset.un); renderQuiz(); });
 
 /* =========================================================
    ⑪ 시작
