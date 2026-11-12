@@ -758,6 +758,7 @@ function evaluate(board, pl, level, unit){
    ========================================================= */
 let DB = null;
 function loadScript(src){ return new Promise((ok,no)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=no; document.head.appendChild(s); }); }
+function fbErr(e){ console.error(e); if(/permission/i.test(String(e&&e.message||e))){ const t=document.getElementById('toast'); if(t&&!fbErr.shown){ fbErr.shown=1; setTimeout(()=>fbErr.shown=0,4000); const d=document.createElement('div'); d.className='toast'; d.innerHTML='⚠️ 저장이 막혀 있어요. Firebase 데이터베이스 규칙에서 <b>scramble</b> 쓰기를 허용해 주세요.'; t.appendChild(d); setTimeout(()=>d.remove(),5000);} } throw e; }
 function fbDB(){
   const db = firebase.database(); let off = 0;
   db.ref('.info/serverTimeOffset').on('value', s=>off=s.val()||0);
@@ -765,8 +766,8 @@ function fbDB(){
   return {
     on(p,cb){ const ref=r(p), h=s=>cb(s.val()); ref.on('value',h); return ()=>ref.off('value',h); },
     get:p=>r(p).once('value').then(s=>s.val()),
-    set:(p,v)=>r(p).set(v), update:(p,v)=>r(p).update(v), remove:p=>r(p).remove(),
-    txn:(p,fn)=>r(p).transaction(fn).then(res=>({committed:res.committed, val:res.snapshot.val()})).catch(e=>{console.error(e);return{committed:false}}),
+    set:(p,v)=>r(p).set(v).catch(fbErr), update:(p,v)=>r(p).update(v).catch(fbErr), remove:p=>r(p).remove().catch(fbErr),
+    txn:(p,fn)=>r(p).transaction(fn).then(res=>({committed:res.committed, val:res.snapshot.val()})).catch(e=>{ try{fbErr(e)}catch(_){} return{committed:false}}),
     onDiscRemove:p=>r(p).onDisconnect().remove(), cancelDisc:p=>r(p).onDisconnect().cancel(),
     now:()=>Date.now()+off, key:()=>db.ref().push().key
   };
