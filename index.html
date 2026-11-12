@@ -838,7 +838,7 @@ const avHTML = (id,cls='') => `<span class="av ${cls}" style="background-image:v
    ========================================================= */
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const DEF_SET = {levelMode:'fixed', level:6, tt:90, classes:8, gs:4, as:false, mix:false};
+const DEF_SET = {levelMode:'fixed', level:6, tt2:20, classes:8, gs:4, as:false, mix:false};
 let lobbyMap = {}, presOn = false;
 const LV_NAME = {3:'기초 단어',4:'기본 단어',5:'확장 단어',6:'도전 단어'};
 let settings = {...DEF_SET}, rooms = {}, rank = {}, SCREEN='home';
@@ -1116,7 +1116,7 @@ function startRoom(k, byTeacher){
     const bag = newBag().split(''); const racks={}, scores={};
     const order = shuffle(ps.slice());
     order.forEach(p=>{ racks[p]=bag.splice(0,RACK).join(''); scores[p]=0; });
-    r.game = {id:DB.key(), level:roomLevel(r), tt:settings.tt||0, order, turn:0, board:'.'.repeat(N*N), bag:bag.join(''), racks, scores, passes:0, moveNo:0, turnStart:DB.now()};
+    r.game = {id:DB.key(), level:roomLevel(r), tt:settings.tt2||0, order, turn:0, board:'.'.repeat(N*N), bag:bag.join(''), racks, scores, passes:0, moveNo:0, turnStart:DB.now()};
     r.status='play'; r.emo=null; return r;
   });
 }
@@ -1281,7 +1281,7 @@ function tick(){
   el.innerHTML = `⌛ <b>${String(Math.floor(rr/60)).padStart(2,'0')}:${String(rr%60).padStart(2,'0')}</b>`;
   el.classList.toggle('warn', remain<=10);
   const cur=g.order[g.turn];
-  if (cur===me.pid && remain<=10 && remain>0 && tick.w!==g.moveNo+':'+remain && remain%3===1){ tick.w=g.moveNo+':'+remain; sfx('warn',.8); }
+  if (cur===me.pid && remain<=10 && remain>0 && tick.w!==g.moveNo+':'+remain && (remain<=5 || remain%3===1)){ tick.w=g.moveNo+':'+remain; sfx('warn',.8); }
   if ((cur===me.pid && remain<=0) || remain<=-6){
     const key=g.moveNo; const last=timeoutTry[key]||0;
     if (Date.now()-last>3000){ timeoutTry[key]=Date.now(); passTurn('timeout'); }
@@ -1559,8 +1559,8 @@ function renderTeacher(){
   $('#tMode').innerHTML = settings.levelMode==='fixed' ? `지금: 모든 방 <b>${settings.level}학년 ${LV_NAME[settings.level]}</b> (점수 ×${LV_MUL[settings.level]})` : '지금: <b>방마다 학생들이 투표로</b> 수준을 정해요';
   document.querySelectorAll('[data-tl]').forEach(b=>b.onclick=()=>applyLevel(b.dataset.tl));
   $('#tStudent').classList.toggle('red', false);
-  $('#tTime').innerHTML = [[0,'제한 없음'],[60,'60초'],[90,'90초'],[120,'120초']].map(([v,l])=>`<button class="gbtn sm ${settings.tt===v?'sel':''}" data-tt="${v}">${l}</button>`).join('');
-  document.querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>DB.set('settings/tt', +b.dataset.tt));
+  $('#tTime').innerHTML = [[20,'20초'],[30,'30초'],[60,'60초'],[0,'제한 없음']].map(([v,l])=>`<button class="gbtn sm ${settings.tt2===v?'sel':''}" data-tt="${v}">${l}</button>`).join('');
+  document.querySelectorAll('[data-tt]').forEach(b=>b.onclick=()=>DB.set('settings/tt2', +b.dataset.tt));
   const tc=$('#tClasses'); if (tc.options.length!==15) tc.innerHTML=Array.from({length:15},(_,i)=>`<option value="${i+1}">${i+1}개 반</option>`).join('');
   tc.value=settings.classes; tc.onchange=()=>DB.set('settings/classes', +tc.value);
   const list=Object.entries(rooms||{}).filter(([k,r])=>r).sort((a,b)=>(a[1].no||0)-(b[1].no||0));
