@@ -706,6 +706,9 @@ body:has(#scr-game.on) #ovBody:not(.rules-big) .close{right:-50px;top:-40px;widt
 .gi-lv b em{font-size:.72em!important}
 .gi-lv span{position:absolute;left:12%;right:12%;top:63%;height:22%;display:grid;place-items:center;color:#fff;font-family:var(--fj);font-size:clamp(9px,.8vw,13px);text-shadow:0 1px 0 #0a1a40,0 0 3px #000;white-space:nowrap}
 #recent .g-leg{display:none}
+
+.gic{container-type:size;height:min(100cqh,84px,calc((100cqw - 12px)/3))!important}
+.gic span{bottom:9%!important;left:50%;max-width:78%;overflow:hidden;font-size:15cqw!important;line-height:1;padding:1px 3px;border-radius:4px;background:rgba(40,18,4,.72);color:#fff3cf}
 </style>
 </head>
 <body>
@@ -811,7 +814,6 @@ body:has(#scr-game.on) #ovBody:not(.rules-big) .close{right:-50px;top:-40px;widt
     <div class="g-timer" id="iTimer"><div class="tm"><small>남은 시간</small><b>--:--</b></div></div>
     <div class="g-icons">
       <button class="gic" data-act="log" style="--img:var(--i-u_ic_book)" aria-label="단어 기록"><span>단어 기록</span></button>
-      <button class="gic" data-act="rules" style="--img:var(--i-u_ic_help)" aria-label="게임 규칙"><span>게임 규칙</span></button>
       <button class="gic" id="btnSet" style="--img:var(--i-u_ic_gear)" aria-label="설정"><span>설정</span></button>
       <button class="gic" id="btnQuit" style="--img:var(--i-u_ic_door)" aria-label="나가기"><span>나가기</span></button>
     </div>
