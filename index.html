@@ -691,8 +691,8 @@ body:has(#scr-game.on) #fsBtn,body:has(#scr-game.on) #sndBtn{display:none!import
 .rules-big img{display:block;height:min(90vh,1000px);max-width:94vw;object-fit:contain;filter:drop-shadow(0 10px 30px rgba(0,0,0,.7));cursor:zoom-out}
 .rules-big .close{right:-6px!important;top:-6px!important;background:#2f1b0c!important;color:#fbe9c2!important;border:2px solid #e9bd55!important;border-radius:50%;width:40px;height:40px;z-index:2}
 /* 게임 중 창 (모달) 액자 */
-body:has(#scr-game.on) #ovBody:not(.rules-big){background:none;border-style:solid;border-width:46px 64px 40px;border-image:var(--i-u_modal) 66 92 56 92 fill / 46px 64px 40px / 0 stretch;border-radius:0;box-shadow:none;filter:drop-shadow(0 12px 28px rgba(0,0,0,.6));padding:4px 6px}
-body:has(#scr-game.on) #ovBody:not(.rules-big) .close{right:-50px;top:-40px;width:34px;height:34px;color:transparent;font-size:0}
+body:has(#scr-game.on) #ov:not([data-lock="res"]) #ovBody:not(.rules-big){background:none;border-style:solid;border-width:46px 64px 40px;border-image:var(--i-u_modal) 66 92 56 92 fill / 46px 64px 40px / 0 stretch;border-radius:0;box-shadow:none;filter:drop-shadow(0 12px 28px rgba(0,0,0,.6));padding:4px 6px}
+body:has(#scr-game.on) #ov:not([data-lock="res"]) #ovBody:not(.rules-big) .close{right:-50px;top:-40px;width:34px;height:34px;color:transparent;font-size:0}
 /* 휴대폰 */
 @media (max-width:760px){
   #scr-game.on{grid-template-columns:1fr 1fr!important;grid-template-rows:auto auto minmax(0,1fr) auto auto auto!important;
