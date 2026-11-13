@@ -156,6 +156,7 @@ main{flex:1;min-height:0;position:relative}
 .rrow .cnt{font-weight:800;color:var(--wood2);width:42px;text-align:center}
 .badge{font-size:12px;font-weight:800;border-radius:999px;padding:3px 10px;color:#fff;white-space:nowrap}
 .badge.wait{background:#2f8a3a}.badge.play{background:#2357b8}.badge.end{background:#8a6a2a}.badge.full{background:#8a7d6c}
+.rooms[data-wait]::before{content:attr(data-wait);display:block;text-align:center;font-weight:800;color:var(--blue);background:#eaf1ff;border:1px solid #b9cdf5;border-radius:10px;padding:8px;margin-bottom:6px}
 .empty-rooms{text-align:center;color:var(--sub);padding:26px 0;font-size:15px}
 
 /* ---------- 대기실 ---------- */
@@ -610,9 +611,10 @@ body:has(#scr-game.on) #sndBtn{bottom:auto;top:104px;right:12px;width:34px;heigh
       </div>
       <div class="parch t-sec full">
         <div class="hd"><h3>자동 모둠 배정</h3><button class="gbtn sm green" id="tAssign">🎲 자동 배정</button><button class="gbtn sm" id="tStartAll">▶ 대기 중인 방 모두 시작</button></div>
-        <p class="d">로비에서 기다리는 학생을 섞어서 방에 넣어요. 학생 화면은 자동으로 대기실로 옮겨져요. 남는 학생 없이 인원을 고르게 나눠요(예: 4명씩 → 10명이면 4·3·3).</p>
+        <p class="d">로비에서 기다리는 학생을 섞어서 방에 넣어요. 학생 화면은 자동으로 대기실로 옮겨져요. 남는 학생 없이 인원을 고르게 나눠요(예: 4명씩 → 10명이면 4·3·3). <b>🔁 자동 재배정</b>을 켜면 게임을 마치고 로비로 온 학생이 3명 이상 모일 때 같이 안 했던 친구끼리 새 방이 만들어져 바로 시작돼요. 30초가 지나도 3명이 안 되면 진행 중인 방의 꼴찌 친구가 합류해요.</p>
         <div class="seg" style="align-items:center;gap:8px"><span style="font-size:13px;color:var(--sub);font-weight:700">모둠 인원</span><span class="seg" id="tGs"></span>
           <label style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;margin-left:10px"><input type="checkbox" id="tAs"> 배정하고 바로 게임 시작</label>
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;margin-left:10px"><input type="checkbox" id="tAuto"> 🔁 자동 재배정</label>
           <label style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:700;margin-left:10px"><input type="checkbox" id="tMix"> 다른 반끼리 섞기</label></div>
         <div class="t-lobby" id="tLobby"></div>
       </div>
@@ -843,7 +845,7 @@ const avHTML = (id,cls='') => `<span class="av ${cls}" style="background-image:v
    ========================================================= */
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const DEF_SET = {levelMode:'fixed', level:6, tt2:20, unit:0, classes:8, gs:4, as:false, mix:false};
+const DEF_SET = {levelMode:'fixed', level:6, tt2:20, unit:0, autoOn:false, classes:8, gs:4, as:false, mix:false};
 let lobbyMap = {}, presOn = false;
 const LV_NAME = {3:'기초 단어',4:'기본 단어',5:'확장 단어',6:'도전 단어'};
 let settings = {...DEF_SET}, rooms = {}, rank = {}, SCREEN='home';
@@ -1024,6 +1026,7 @@ function renderLobby(){
   $('#meCard').innerHTML = `${heroHTML(c.id)}<div style="text-align:center"><div class="nm">${esc(me.name)}</div><div class="cl">${esc(me.cls)}반 · ${c.r}</div></div>
     <button class="wb wb1" style="--n:var(--i-bt_charsel_n);--ar:2.98;--bh:44px" data-go="entry" aria-label="캐릭터 선택"></button><button class="wb" style="--n:var(--i-bt_blank_n);--h:var(--i-bt_blank_h);--d:var(--i-bt_blank_d);--bh:44px" data-go="study" aria-label="단어 공부" data-hook="study">📖 단어 공부</button>`;
   document.querySelectorAll('[data-hook="study"]').forEach(b=>{ b.classList.toggle('hidden',!settings.unit); b.textContent=settings.unit?`📖 ${settings.unit}단원 공부`:''; });
+  if (settings.autoOn){ const W=waitingList(); const me0=lobbyMap[pid]; const w=me0?Math.floor((DB.now()-me0.t)/1000):0; $('#roomList').dataset.wait=`🔁 다음 게임 준비 중 · 로비 대기 ${W.length}명${me0?` · ${w}초`:''}`; } else delete $('#roomList').dataset.wait;
   $('#lobbyLevel').innerHTML = levelModeText()+'<span style="margin-left:auto;font-size:12px;color:var(--sub)">🎲 선생님이 모둠을 배정하면 자동으로 방에 들어가요</span>';
   Object.entries(rooms||{}).forEach(([k,r])=>{ if(r && !r.players && DB.now()-(r.created||0)>8000) DB.remove('rooms/'+k); });
   const list = Object.entries(rooms||{}).filter(([k,r])=>r&&r.players).sort((a,b)=>(a[1].no||0)-(b[1].no||0));
@@ -1060,7 +1063,7 @@ function enterRoom(k){
   DB.onDiscRemove(`rooms/${k}/players/${me.pid}`);
   const r=rooms[k]; show(r && r.status!=='wait' ? 'game' : 'room');
 }
-function exitRoomLocal(){ rid=null; sessionStorage.removeItem('scr_rid'); closeModal(); resetPlay(); seenGameId=null; if(SCREEN!=='teacher') show(me?'lobby':'home'); }
+function exitRoomLocal(){ rid=null; sessionStorage.removeItem('scr_rid'); closeModal(); resetPlay(); seenGameId=null; if(SCREEN!=='teacher') show(me?'lobby':'home'); setTimeout(checkAssign,300); }
 async function leaveRoom(){
   const k=rid; if(!k) return;
   window._leaving=true; setTimeout(()=>window._leaving=false,1500);
@@ -1132,17 +1135,66 @@ $('#btnStart').onclick = async ()=>{ const res=await startRoom(rid,false); if (!
 /* ---------- 로비 대기 & 자동 배정 ---------- */
 function presence(){
   const want = !!(me && (SCREEN==='lobby'||SCREEN==='study') && !rid);
-  if (want && !presOn){ presOn=true; DB.set('lobby/'+pid,{n:me.name,c:me.cls,ch:me.ch,t:DB.now()}); DB.onDiscRemove('lobby/'+pid); }
+  if (want && !presOn){ presOn=true; DB.set('lobby/'+pid,{n:me.name,c:me.cls,ch:me.ch,t:DB.now(),met:getMet()}); DB.onDiscRemove('lobby/'+pid); }
   else if (!want && presOn){ presOn=false; DB.cancelDisc('lobby/'+pid); DB.remove('lobby/'+pid); }
 }
 function checkAssign(){
-  const mine=lobbyMap[pid]; if (!mine || !mine.assign || rid || !me) return;
-  const r=rooms[mine.assign]; if (!r || !r.players || !r.players[pid]) return;
-  toast('🎲 선생님이 모둠을 배정했어요!', true); enterRoom(mine.assign);
+  if (rid || !me || !['lobby','study'].includes(SCREEN)) return;
+  const k=Object.keys(rooms||{}).find(k=>{ const r=rooms[k]; return r&&r.players&&r.players[pid]&&r.status!=='end'&&!(r.game&&r.game.left&&r.game.left[pid]); });
+  if (!k) return;
+  toast(rooms[k].auto2?'🎲 새 모둠이 만들어졌어요!':'🎲 선생님이 모둠을 배정했어요!', true); enterRoom(k);
 }
+/* ---------- 자동 재배정 ---------- */
+function getMet(){ try{ return JSON.parse(sessionStorage.getItem('scr_met')||'[]'); }catch(e){ return []; } }
+function addMet(list){ const m=new Set(getMet()); list.forEach(p=>{ if(p!==pid) m.add(p); }); try{ sessionStorage.setItem('scr_met',JSON.stringify([...m].slice(-40))); }catch(e){} }
+const MATCH_WAIT=8000, FORCE_WAIT=30000;
+function waitingList(){
+  return Object.entries(lobbyMap||{}).filter(([p,x])=>x && !Object.values(rooms||{}).some(r=>r&&r.players&&r.players[p]&&r.status!=='end'&&!(r.game&&r.game.left&&r.game.left[p])));
+}
+function conflict(a,b){ const A=(a[1].met||[]), B=(b[1].met||[]); return (A.includes(b[0])?1:0)+(B.includes(a[0])?1:0); }
+function makeGroups(list){
+  const n=list.length; let g=Math.ceil(n/4); while(g>0 && n/g<3) g--; if(!g) return [];
+  const L=list.slice().sort((a,b)=>a[1].t-b[1].t);
+  const take=Math.min(n,4*g), pool=L.slice(0,take);
+  const groups=pool.slice(0,g).map(x=>[x]); const rest=pool.slice(g);
+  const cap=i=>Math.floor(take/g)+(i<take%g?1:0);
+  rest.forEach(x=>{ let best=-1,bs=1e9; groups.forEach((gr,i)=>{ if(gr.length>=cap(i)) return; const sc=gr.reduce((t,y)=>t+conflict(x,y),0)*10+gr.length; if(sc<bs){bs=sc;best=i;} }); groups[best].push(x); });
+  return groups;
+}
+async function autoMatch(){
+  if (!settings.autoOn) return;
+  const now=DB.now();
+  const W=waitingList(); if (!W.length) return;
+  const oldest=Math.min(...W.map(x=>x[1].t||now));
+  let groups=[], pulled=[];
+  if (W.length>=4 || (W.length>=3 && now-oldest>=MATCH_WAIT)) groups=makeGroups(W);
+  else if (now-oldest>=FORCE_WAIT){
+    const need=3-W.length;
+    const cand=Object.entries(rooms||{}).filter(([k,r])=>r&&r.status==='play'&&r.game&&activeOf(r.game).length>=3).map(([k,r])=>{
+      const act=activeOf(r.game); const low=act.slice().sort((a,b)=>((r.game.scores||{})[a]||0)-((r.game.scores||{})[b]||0))[0];
+      return {k,p:low,s:(r.game.scores||{})[low]||0,P:r.players[low],mv:r.game.moveNo||0}; }).filter(c=>c.mv>=2).sort((a,b)=>b.mv-a.mv||a.s-b.s).slice(0,need);
+    if (cand.length<need) return;
+    pulled=cand; groups=[W.concat(cand.map(c=>[c.p,{n:c.P.n,c:c.P.c,ch:c.P.ch,t:now,met:[]}]))];
+  } else return;
+  if (!groups.length) return;
+  const lock=await DB.txn('matchLock', cur=>{ if(cur && now-cur.t<4000 && cur.by!==pid) return; return {by:pid,t:now}; });
+  if (!lock.committed) return;
+  for (const c of pulled){
+    await DB.txn('rooms/'+c.k, r=>{ if(!r||r.status!=='play'||!r.game) return; const g=r.game; if(activeOf(g).length<3) return;
+      g.left=g.left||{}; g.left[c.p]=true; if(g.order[g.turn]===c.p){ g.turn=nextTurn(g); g.turnStart=DB.now(); }
+      g.moveNo=(g.moveNo||0)+1; const log=g.log||[]; log.push({p:c.p,t:'moved'}); g.log=log.slice(-40); return r; });
+  }
+  let no=Math.max(0,...Object.values(rooms||{}).map(r=>(r&&r.no)||0));
+  const up={}, keys=[];
+  groups.forEach(gr=>{ const k=DB.key(); keys.push(k); no++; const players={}; gr.forEach(([p,x],i)=>players[p]={n:x.n,c:x.c,ch:x.ch,t:now+i});
+    up['rooms/'+k]={no, created:now, host:gr[0][0], status:'wait', auto:true, auto2:true, players}; });
+  await DB.update('', up);
+  setTimeout(()=>keys.forEach(k=>startRoom(k,true)), 1200);
+}
+setInterval(()=>{ if((me && ['lobby','study','room','game'].includes(SCREEN)) || SCREEN==='teacher') autoMatch().catch(()=>{}); }, 2000);
 async function autoAssign(){
   const now=DB.now();
-  let list=Object.entries(lobbyMap||{}).filter(([p,x])=>x && !(x.assign&&rooms[x.assign]));
+  let list=waitingList();
   if (list.length<2){ toast('로비에서 기다리는 학생이 2명 이상이어야 해요.'); return; }
   shuffle(list);
   const size=settings.gs||4, g=Math.ceil(list.length/size), groups=Array.from({length:g},()=>[]);
@@ -1154,7 +1206,7 @@ async function autoAssign(){
   groups.forEach(gr=>{ const k=DB.key(); keys.push(k); no++; const players={}; gr.forEach(([p,x],i)=>players[p]={n:x.n,c:x.c,ch:x.ch,t:now+i});
     up['rooms/'+k]={no, created:now, host:gr[0][0], status:'wait', auto:true, players}; gr.forEach(([p])=>up[`lobby/${p}/assign`]=k); });
   await DB.update('', up);
-  toast(`${list.length}명을 ${g}개 방으로 배정했어요.`);
+  toast(`${list.length}명을 ${g}개 방으로 배정했어요.`); if(!settings.autoOn) DB.set('settings/autoOn',true);
   if (settings.as) setTimeout(()=>keys.forEach(k=>startRoom(k,true)), 1500);
 }
 
@@ -1187,7 +1239,7 @@ function celebrate(lastE, r){
 }
 function renderGame(){
   const r=rooms[rid], g=G(); if(!r||!g) return;
-  if (g.id!==seenGameId){ seenGameId=g.id; resetPlay(); hintsLeft=3; seenMove=g.moveNo; seenLevel=g.level; closeModal(); }
+  if (g.id!==seenGameId){ seenGameId=g.id; addMet(g.order||[]); resetPlay(); hintsLeft=3; seenMove=g.moveNo; seenLevel=g.level; closeModal(); }
   if (seenLevel!==null && g.level!==seenLevel){ toast(`선생님이 단어 수준을 <b>${g.level}학년</b>으로 바꿨어요.`, true); seenLevel=g.level; }
   if (g.moveNo!==seenMove){
     const log=g.log||[]; const lastE=log[log.length-1];
@@ -1197,6 +1249,7 @@ function renderGame(){
       else if (lastE.t==='swap') toast(`${who}: 타일을 바꿨어요`);
       else if (lastE.t==='timeout'){ toast(`⌛ ${who}: 시간이 다 돼서 넘어갔어요`); if(lastE.p===me.pid) charPop(me.ch,'WRONG'); }
       else if (lastE.t==='pass') toast(`${who}: 차례를 넘겼어요`);
+      else if (lastE.t==='moved') toast(`🎲 ${who}: 새 모둠으로 이동했어요`);
     }
     seenMove=g.moveNo;
   }
@@ -1295,6 +1348,7 @@ function tick(){
   }
 }
 setInterval(()=>{ if(SCREEN==='game' && rid) tick(); }, 500);
+setInterval(()=>{ if(SCREEN==='lobby' && settings.autoOn) renderLobby(); }, 1000);
 
 /* ---------- 타일 놓기 ---------- */
 function placeSlot(id, i){
@@ -1481,8 +1535,10 @@ function showResults(r){
   if (win0&&top>0) setTimeout(()=>charPop(win0.P.ch,'AMAZING',0), 200);
   setTimeout(()=>sfx(iWin?'levelup':'rankup'), 900);
   if (iWin){ const W=window.innerWidth,H=window.innerHeight; magicFx('p',W/2,H*0.32,Math.min(W,520),1.6); setTimeout(()=>magicFx('y',W*0.3,H*0.45,260,1.2),300); setTimeout(()=>magicFx('y',W*0.7,H*0.45,260,1.2),550); }
+  if (settings.autoOn){ const ra=$('#resAgain'); if(ra) ra.remove(); const gid=g.id; const tip=document.createElement('p'); tip.className='res-reason'; tip.style.marginTop='10px'; tip.textContent='🔁 12초 뒤 로비로 이동해 새 친구들과 다음 게임을 해요.'; $('#ovBody').appendChild(tip);
+    clearTimeout(showResults.t); showResults.t=setTimeout(()=>{ const r2=rooms[rid]; if(r2&&r2.status==='end'&&r2.game&&r2.game.id===gid){ closeModal(); leaveAfterEnd(); } },12000); }
   $('#resLobby').onclick=()=>{ closeModal(); leaveAfterEnd(); };
-  $('#resAgain').onclick=()=>{
+  if($('#resAgain')) $('#resAgain').onclick=()=>{
     DB.txn('rooms/'+rid, rr=>{
       if (!rr || rr.status!=='end') return;
       const gl=(rr.game&&rr.game.left)||{};
@@ -1559,8 +1615,8 @@ $('#btnTOut').onclick = ()=>show(me ? (rid ? (rooms[rid]&&rooms[rid].status!=='w
 function renderTeacher(){
   $('#tGs').innerHTML=[2,3,4].map(n=>`<button class="gbtn sm ${settings.gs===n?'sel':''}" data-gs="${n}">${n}명씩</button>`).join('');
   document.querySelectorAll('[data-gs]').forEach(b=>b.onclick=()=>DB.set('settings/gs',+b.dataset.gs));
-  $('#tAs').checked=!!settings.as; $('#tMix').checked=!!settings.mix;
-  const wl=Object.entries(lobbyMap||{}).filter(([p,x])=>x&&!(x.assign&&rooms[x.assign])).sort((a,b)=>String(a[1].c).localeCompare(String(b[1].c))||a[1].t-b[1].t);
+  $('#tAs').checked=!!settings.as; $('#tAuto').checked=!!settings.autoOn; $('#tMix').checked=!!settings.mix;
+  const wl=waitingList().sort((a,b)=>String(a[1].c).localeCompare(String(b[1].c))||a[1].t-b[1].t);
   $('#tLobby').innerHTML = `<b style="font-size:14px;margin-right:6px">로비 대기 ${wl.length}명</b>` + (wl.length? wl.map(([p,x])=>`<span class="lp">${avHTML(x.ch)}${esc(x.c)}반 ${esc(x.n)}</span>`).join('') : '<span style="color:var(--sub);font-size:13px">기다리는 학생이 없어요</span>');
   $('#tLevel').innerHTML = [3,4,5,6].map(L=>`<button class="lvc ${settings.levelMode==='fixed'&&settings.level===L?'on':(settings.levelMode==='fixed'?'dim':'')}" style="--img:var(--i-lv${L})" data-tl="${L}" aria-label="${L}학년 일괄 적용"><span class="mul">×${LV_MUL[L]}</span></button>`).join('');
   $('#tUnit').innerHTML=[[11,'11단원 · 전통문화'],[12,'12단원 · 환경'],[0,'사용 안 함']].map(([u,l])=>`<button class="gbtn sm ${(settings.unit||0)===u?'sel':''}" data-tu="${u}">${l}</button>`).join('');
@@ -1599,6 +1655,7 @@ async function applyLevel(v){
 $('#tAs').onchange=e=>DB.set('settings/as',e.target.checked);
 $('#tMix').onchange=e=>DB.set('settings/mix',e.target.checked);
 $('#tAssign').onclick=()=>autoAssign();
+$('#tAuto').onchange=e=>DB.set('settings/autoOn',e.target.checked);
 $('#tStartAll').onclick=async()=>{ const ks=Object.entries(rooms||{}).filter(([k,r])=>r&&r.status==='wait'&&Object.keys(r.players||{}).length>=2).map(([k])=>k); if(!ks.length){ toast('시작할 수 있는 대기 방이 없어요.'); return; } for(const k of ks) await startRoom(k,true); toast(`${ks.length}개 방을 시작했어요.`); };
 $('#tCloseAll').onclick = ()=>{ if(confirm('열린 방을 모두 닫을까요?')) DB.remove('rooms'); };
 $('#tReset').onclick = async ()=>{
