@@ -425,6 +425,30 @@ body:has(#scr-game.on) #rankbar .chip .av{width:20px;height:20px}
 body:has(#scr-game.on) #fsBtn{bottom:auto;top:40px;right:340px;width:34px;height:34px;font-size:16px}
 body:has(#scr-game.on) #sndBtn{top:40px!important;right:300px!important}
 @media (max-width:760px){ body:has(#scr-game.on) #fsBtn{top:4px;right:44px;width:30px;height:30px} body:has(#scr-game.on) #sndBtn{top:4px!important;right:8px!important;width:30px;height:30px} }
+/* 학생 자리 한쪽 + 쉬운 설명 */
+#seats{grid-area:seats;display:flex;flex-direction:column;justify-content:center;gap:10px;min-height:0;overflow:auto;padding:4px 2px}
+#seats .seat{grid-area:auto!important;grid-column:auto!important;grid-row:auto!important;width:auto!important;justify-self:stretch!important;align-self:stretch!important;margin:0!important;flex:none}
+#guide{grid-area:guide;padding:10px 12px;overflow:auto;min-height:0;display:flex;flex-direction:column;gap:6px;align-self:center;max-height:100%}
+#guide .g-title{font-family:var(--fj);font-size:20px;text-align:center;color:var(--wood2)}
+#guide .g-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;counter-reset:gs}
+#guide .g-steps li{counter-increment:gs;position:relative;padding:6px 8px 6px 38px;border-radius:10px;background:rgba(255,255,255,.55);border:2px solid transparent;transition:.2s}
+#guide .g-steps li::before{content:counter(gs);position:absolute;left:8px;top:8px;width:22px;height:22px;border-radius:50%;background:#b98c55;color:#fff;font-weight:900;font-size:13px;display:grid;place-items:center}
+#guide .g-steps li b{display:block;font-size:15px}
+#guide .g-steps li span{font-size:12.5px;color:var(--sub);line-height:1.35}
+#guide .g-steps li.on{border-color:#ffb300;background:#fff6cf;box-shadow:0 0 0 3px rgba(255,200,60,.35);transform:scale(1.03)}
+#guide .g-steps li.on::before{background:#e53935}
+#guide .g-tip{font-size:13px;font-weight:700;border-radius:10px;padding:7px 9px;background:#efe3c6;line-height:1.4}
+#guide .g-tip.me{background:#fff2b8}#guide .g-tip.good{background:#e3f6dc;color:#1f6a24}#guide .g-tip.bad{background:#fde3dc;color:#b02a1c}
+#guide .g-sub{font-weight:900;font-size:13px;color:var(--wood2);margin-top:2px}#guide .g-sub small{font-weight:600;color:var(--sub)}
+#guide .g-leg{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+#guide .g-leg span{display:flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;background:#fff;border:1px solid var(--par2);border-radius:8px;padding:2px 6px 2px 2px;cursor:pointer}
+#guide .g-leg i{width:22px;height:22px;border-radius:4px;background:var(--img) center/cover;flex:none}
+#guide .g-bonus{margin:0;padding-left:0;list-style:none;font-size:12.5px;line-height:1.6}
+#guide .g-help{margin:0;font-size:12.5px;line-height:1.6}
+@media (min-width:761px){
+  #scr-game.on,#scr-game.no-sides{grid-template-columns:190px minmax(0,1fr) 230px!important;grid-template-rows:auto minmax(0,1fr) auto!important;grid-template-areas:"info info info" "seats board guide" "me me me"!important}
+  #legend{display:none!important}
+}
 /* ---------- 좁은 화면 ---------- */
 @media (max-width:1100px){ #scr-entry>.chars{grid-template-columns:repeat(5,1fr);max-width:720px} }
 @media (max-width:760px){
@@ -471,6 +495,12 @@ body:has(#scr-game.on) #sndBtn{top:40px!important;right:300px!important}
   .pill.timer b{font-size:14px}
   .t-grid,.rank-cols{grid-template-columns:1fr}
   .emo{height:46px;top:-40px}
+}
+@media (max-width:760px){
+  #scr-game.on,#scr-game.no-sides{grid-template-columns:1fr!important;grid-template-rows:auto auto minmax(0,1fr) auto!important;grid-template-areas:"info" "seats" "board" "me"!important}
+  #seats{flex-direction:row;gap:5px;padding:0}
+  #seats .seat{flex:1;min-width:0}
+  #guide{display:none}
 }
 </style>
 </head>
@@ -582,9 +612,32 @@ body:has(#scr-game.on) #sndBtn{top:40px!important;right:300px!important}
       <button class="wb wb1" style="--n:var(--i-bt_help_n);--ar:2.11;--bh:40px" data-act="rules" aria-label="도움말"></button>
       <button class="wb wb1" style="--n:var(--i-bt_exit_n);--ar:2.99;--bh:40px" id="btnQuit" aria-label="나가기"></button>
     </div>
-    <div class="seat seat-top hidden" id="seat-top"></div>
-    <div class="seat seat-left hidden" id="seat-left"></div>
-    <div class="seat seat-right hidden" id="seat-right"></div>
+    <div id="seats">
+      <div class="seat seat-left hidden" id="seat-left"></div>
+      <div class="seat seat-top hidden" id="seat-top"></div>
+      <div class="seat seat-right hidden" id="seat-right"></div>
+    </div>
+    <aside id="guide" class="parch">
+      <div class="g-title">📖 이렇게 해요</div>
+      <ol class="g-steps">
+        <li data-gs="1"><b>타일 누르기</b><span>아래 내 타일을 눌러 골라요</span></li>
+        <li data-gs="2"><b>칸에 놓기</b><span>가로나 세로 <u>한 줄</u>로,<br>판의 글자와 <u>이어서</u> 놓아요</span></li>
+        <li data-gs="3"><b>✔ 초록이면 제출!</b><span>‘단어 제출’을 누르면 점수!</span></li>
+      </ol>
+      <div class="g-tip" id="gTip"></div>
+      <div class="g-sub">색깔 칸 <small>(처음 놓을 때만)</small></div>
+      <div class="g-leg">
+        <span data-pm="DL"><i style="--img:var(--i-p_DL)"></i>글자 ×2</span>
+        <span data-pm="TL"><i style="--img:var(--i-p_TL)"></i>글자 ×3</span>
+        <span data-pm="DW"><i style="--img:var(--i-p_DW)"></i>단어 ×2</span>
+        <span data-pm="TW"><i style="--img:var(--i-p_TW)"></i>단어 ×3</span>
+        <span data-pm="ST"><i style="--img:var(--i-p_ST)"></i>첫 단어</span>
+      </div>
+      <div class="g-sub">보너스</div>
+      <ul class="g-bonus" id="gBonus"></ul>
+      <div class="g-sub">막히면?</div>
+      <p class="g-help">💡 <b>힌트</b>(3번) · 🔄 <b>타일 교환</b><br>⌛ 한 차례 <b id="gTime">20</b>초</p>
+    </aside>
     <div id="boardWrap"><div class="board-frame"><div id="board"></div></div>
       <div class="legend" id="legend">
         <span data-pm="TW"><i style="--img:var(--i-p_TW)"></i><b>TW</b> 단어 점수 ×3</span>
@@ -1297,7 +1350,7 @@ function renderGame(){
     el.style.setProperty('--cc', c.c);
     const head=`<div class="seat-head">${avHTML(P.ch)}<div class="nm"><b>${esc(P.n)}</b><small>${esc(P.c)}반 · ${c.r}</small></div></div>`;
     const body=`<div class="sc">${(g.scores||{})[p]||0}<small> 점</small></div><div class="backs">${'<i></i>'.repeat(n)}</div>`;
-    el.innerHTML = `<span class="tturn">차례</span>${pos[i]==='top'&&window.innerWidth>760?`<div class="seat-row">${head}<div style="margin-left:auto">${body}</div></div>`:head+body}<div class="status">${gone?'나갔어요':turn?'✨ 단어 만드는 중…':''}</div>`;
+    el.innerHTML = `<span class="tturn">차례</span>${false?`<div class="seat-row">${head}<div style="margin-left:auto">${body}</div></div>`:head+body}<div class="status">${gone?'나갔어요':turn?'✨ 단어 만드는 중…':''}</div>`;
     const e=emo[p]; if (e && DB.now()-e.t<2600){ const d=document.createElement('div'); d.className='emo'; d.style.setProperty('--img',`var(--i-${e.k})`); d.style.animationDelay=(-(DB.now()-e.t)/1000)+'s'; el.appendChild(d); }
   });
   const myE=emo[me.pid]; Object.entries(emo).forEach(([p,e])=>{ if(e&&seenEmo[p]!==e.t){ seenEmo[p]=e.t; if(DB.now()-e.t<2600) setTimeout(()=>{ if(SCREEN==='game') renderGame(); },2700); } });
@@ -1345,6 +1398,18 @@ function renderPlay(myEmo){
     if (ev.ok){ pv.className='ok'; pv.innerHTML = '✔ '+ev.words.map(w=>`${w.w.toUpperCase()} <span style="font-weight:500;color:var(--sub)">${esc(w.m)}</span>${w.u?` <span style="color:#1f4fa8">📘단원 +${w.u}</span>`:''}`).join(' · ')+` → <b>+${ev.total}점</b>${ev.bingo?' 🎉':''}`; }
     else { pv.className='err'; pv.textContent = '✖ '+ev.msg; }
   } else { pv.className=''; pv.textContent = turn ? '타일을 골라 판 위에 놓아 단어를 만들어 보세요.' : '내 차례를 기다리는 동안 미리 놓아 볼 수 있어요.'; }
+  { const st = !turn ? 0 : swapMode ? 0 : !tent.length ? (sel?2:1) : (ev&&ev.ok ? 3 : 2);
+    document.querySelectorAll('#guide [data-gs]').forEach(li=>li.classList.toggle('on', +li.dataset.gs===st));
+    const tip=$('#gTip');
+    if (!turn) tip.innerHTML=`⏳ <b>${esc(pl(r,g.order[g.turn]).n)}</b> 차례예요. 미리 놓아 봐도 돼요!`;
+    else if (swapMode) tip.innerHTML='🔄 바꿀 타일을 고르고 ‘타일 교환’';
+    else if (!/[^.]/.test(g.board) && !tent.length) tip.innerHTML='⭐ 첫 단어는 가운데 <b>★ 칸</b>을 지나게!';
+    else if (ev && !ev.ok) tip.innerHTML='✖ '+esc(ev.msg);
+    else if (ev && ev.ok) tip.innerHTML=`✔ 좋아요! <b>+${ev.total}점</b> — 제출하세요`;
+    else tip.innerHTML='✨ <b>내 차례!</b> 판에 있는 글자에 이어 붙여요';
+    tip.className='g-tip'+(turn?' me':'')+(ev&&!ev.ok?' bad':'')+(ev&&ev.ok?' good':'');
+    $('#gBonus').innerHTML = (g.unit?`<li>📘 <b>${g.unit}단원 단어</b> +${UNIT_BONUS}</li>`:'')+`<li>🌟 7개 모두 쓰기 +${BINGO}</li><li>📈 ${g.level}학년 수준 점수 ×${LV_MUL[g.level]}</li>`;
+    $('#gTime').textContent = g.tt||'∞'; }
   const bagN=(g.bag||'').length, playing=r.status==='play';
   const B=(c,img,ar,dis,lbl,extra='',txt='')=>`<span class="ibw"><button class="wb" style="--n:var(--i-bt_${img}_n);--h:var(--i-bt_${img}_h);--d:var(--i-bt_${img}_d)" data-c="${c}" ${dis?'disabled':''} aria-label="${lbl}">${txt}</button>${extra}</span>`;
   if (swapMode){
@@ -1444,6 +1509,7 @@ function premInfo(p, flash=true){
   toast(`<span class="sw" style="--img:var(--i-p_${p});width:26px;height:26px"></span><span><b style="color:var(--gold)">${a}</b> <small style="opacity:.8">${en}</small> — ${ko}<br><small style="opacity:.85">예) ${ex} · 처음 놓을 때 한 번만!</small></span>`, false, 3600);
   if (flash){ document.querySelectorAll('#board .cell.p-'+p).forEach(el=>{ el.classList.remove('hl'); void el.offsetWidth; el.classList.add('hl'); }); }
 }
+$('#guide').addEventListener('click',e=>{ const s=e.target.closest('[data-pm]'); if(s) premInfo(s.dataset.pm); });
 $('#legend').addEventListener('click',e=>{ const s=e.target.closest('[data-pm]'); if(s) premInfo(s.dataset.pm); });
 $('#ctrl').addEventListener('click', e=>{
   const b=e.target.closest('[data-c]'); if(!b || b.disabled) return; if(b.dataset.c!=='submit'&&b.dataset.c!=='hint') sfx('click',.7);
