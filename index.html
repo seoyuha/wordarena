@@ -507,7 +507,7 @@ body:has(#scr-game.on) #sndBtn{bottom:auto;top:104px;right:12px;width:34px;heigh
     <div class="lobby">
       <div class="parch me-card" id="meCard"></div>
       <div class="parch room-panel">
-        <div class="hd"><h3>방 목록</h3><button class="wb" style="--n:var(--i-bt_mkroom_n);--h:var(--i-bt_mkroom_h);--d:var(--i-bt_mkroom_d);--bh:48px" id="btnNewRoom" aria-label="방 만들기"></button></div>
+        <div class="hd"><h3>방 목록</h3></div>
         <div class="lv-note" id="lobbyLevel"></div>
         <div class="rooms" id="roomList"></div>
       </div>
@@ -1033,10 +1033,10 @@ function renderLobby(){
     const can = r.status==='wait' && cnt<4;
     return `<div class="rrow"><span class="no">방 ${r.no}</span>${st}<div class="who">${ps.map(p=>avHTML(p.ch)).join('')}<small>${ps.map(p=>esc(p.n)).join(', ')}</small></div><span class="cnt">${cnt}/4</span>
       <button class="wb" style="--n:var(--i-bt_join_n);--h:var(--i-bt_join_h);--d:var(--i-bt_join_d);--bh:44px" data-join="${k}" ${can?'':'disabled'} aria-label="방 참가하기"></button></div>`;
-  }).join('') : '<div class="empty-rooms">아직 열린 방이 없어요.<br>‘방 만들기’를 눌러 첫 방을 열어 보세요!</div>';
+  }).join('') : '<div class="empty-rooms">선생님이 모둠을 배정하면<br>자동으로 방에 들어가요. 조금만 기다려 주세요!</div>';
   document.querySelectorAll('[data-join]').forEach(b=>b.onclick=()=>joinRoom(b.dataset.join));
 }
-$('#btnNewRoom').onclick = ()=>createRoom();
+
 function meP(){ return {n:me.name,c:me.cls,ch:me.ch,t:DB.now()}; }
 async function createRoom(){
   const k = DB.key(); const no = Math.max(0,...Object.values(rooms||{}).map(r=>(r&&r.no)||0))+1;
